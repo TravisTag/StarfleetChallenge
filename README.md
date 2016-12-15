@@ -20,15 +20,17 @@ Of course, a purely object oriented language would maybe make more sense, but wi
 
 I had a few choices to make during implementation.
 The main one was how to actually store the relative locations of the mines.
-For readability, I chose to make a simple Mine structure/object, which contains a Numpy array for the [x, y], and an int for the depth.
-I used Numpy arrays for the relative locations and movement vectors to facilitate simple element-wise addition and comparison.
+For readability, I chose to make a simple Mine structure/object, which contains a NumPy array for the [x, y], and an int for the depth.
+I used NumPy arrays for the relative locations and movement vectors to facilitate simple element-wise addition and comparison.
 
 Due to the representation of the problem I chose, movement can be performed by subtracting the movement vector from each mine's relative location, and checking if a torpedo hit a mine can be performed by comparing the relative locations of the torpedoes to the relative locations of the mines.
 Descending into the cuboid is performed by decreasing the relative depth of each mine by 1 each step.
 
 ### Notes
-- I used Python 3 for this, but tested it with Python 2.7.5 as well, so it should work with either.
+- I used Python 3 for this, but tested it with Python 2.7.5 as well, so it should work with either, provided NumPy is installed.
 
 - The line that converts the depth as a character into an integer is strange because in ASCII lowercase letters have higher values than capital letters. Could have just as easily calculated the value procedurally, but I thought it would be more fun to use 1 equation that worked over both ranges.
 
 - Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with resepect to the examples. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
+
+- As defined, the program takes 2 command line arguments: the field file and script file names in order.
