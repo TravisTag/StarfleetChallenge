@@ -1,6 +1,11 @@
 import sys
 import numpy as np
 
+class Mine:
+	def __init__(self, loc, d):
+		self.location = loc
+		self.depth = d
+
 class MinefieldRun:
 
 	def __init__(self, flist):
@@ -12,8 +17,8 @@ class MinefieldRun:
 		'gamma': np.array([[-1,0],[0,0],[1,0]]), 
 		'delta': np.array([[0,-1],[0,0],[0,1]])
 		}
-		self.directions = {'north': np.array([0, 1]), 
-		'south': np.array([0, -1]), 
+		self.directions = {'north': np.array([0, -1]), 
+		'south': np.array([0, 1]), 
 		'east': np.array([1, 0]), 
 		'west': np.array([-1, 0])}
 
@@ -28,11 +33,13 @@ class MinefieldRun:
 		center = np.array([int(len(flist[0])/2), int(len(flist)/2)])
 		
 		#Find mines and keep their locations relative to the center of the grid
+		#x and y indexing is reversed because of the grid vs. matrix representations
 		self.mines = []
 		for y in range(0, len(flist)):
 			for x in range(0, len(flist[y])):
 					if(flist[y][x] is not '.'):
-						self.mines.append([np.array([x, y]-center),(ord(flist[y][x])-38)%58])
+						#An integer value for the depth is obtained using the integer value of the ASCII character, with some modular arithmetic
+						self.mines.append(Mine(np.array([x, y]-center),(ord(flist[y][x])-38)%58 ))
 
 		
 		self.initialMines = len(self.mines)
@@ -42,7 +49,7 @@ class MinefieldRun:
 
 		#Subtract the movement vector from the relative locations of all mines
 		for m in self.mines:
-			m[0]-=self.directions[dir]
+			m.location-=self.directions[dir]
 
 		#Update move penalty
 		self.movePenalty = min(self.initialMines*3, self.movePenalty+2)
@@ -56,15 +63,13 @@ class MinefieldRun:
 		toRemove = []
 		#If any of these locations match with the relative locations of a mine, mark mine to be removed
 		#so as not to alter a list while iterating through it
-		for i in range(0, len(self.mines)):
+		for m in self.mines:
 			for r in relLocs:
-				if(self.mines[i][0]==r).all():
-					toRemove.append(i)
+				if(m.location==r).all():
+					toRemove.append(m)
 
-		#Reverse indicies and pop from back to front			
-		toRemove.reverse()
 		for i in toRemove:
-			self.mines.pop(i)
+			self.mines.remove(i)
 
 		#Update shot penalty
 		self.shotPenalty = min(self.initialMines*5, self.shotPenalty+5)
@@ -86,8 +91,8 @@ class MinefieldRun:
 
 			#No matter what, descend 1 unit, check for passing a mine
 			for m in self.mines:
-				m[1]-=1
-				if(m[1]<=0):
+				m.depth-=1
+				if(m.depth<=0):
 					self.finished = True
 					self.success = False
 
@@ -107,8 +112,8 @@ class MinefieldRun:
 		elif(27<=d<=52):
 			return chr(d+38)
 		elif(d<=0):
-			#Use a backslash to represent a mine that has been 'passed'
-			return '\\'
+			#Use a * to represent a mine that has been 'passed'
+			return '*'
 
 	def getFieldString(self):
 		#Finds the smallest representation of the grid that includes all current mines and has
@@ -119,8 +124,8 @@ class MinefieldRun:
 
 		#Find max x and y deltas, set the size equal to 2 times this + 1, so the ship is in the center
 		for m in self.mines:
-			maxX = max(maxX, abs(m[0][0]))
-			maxY = max(maxY, abs(m[0][1]))
+			maxX = max(maxX, abs(m.location[0]))
+			maxY = max(maxY, abs(m.location[1]))
 		width = 2*maxX + 1
 		height = 2*maxY + 1
 
@@ -133,7 +138,7 @@ class MinefieldRun:
 
 		#Add in mines relative to ship at the center [maxX, maxY]		
 		for m in self.mines:
-			currentField[m[0][1]+maxY][m[0][0]+maxX] = self.depthToLetter(m[1])
+			currentField[m.location[1]+maxY][m.location[0]+maxX] = self.depthToLetter(m.depth)
 		s = ''
 
 		#Convert to string
@@ -153,7 +158,7 @@ def readField(filename):
 	contents = []
 	f = open(filename, 'r')
 	s = f.readline()
-	while(s is not ''):
+	while(s):
 		s = s.strip('\n')
 		contents.append(list(s))
 		s = f.readline()
@@ -165,7 +170,7 @@ def readScript(filename):
 	contents = []
 	f = open(filename, 'r')
 	s = f.readline()
-	while(s is not ''):
+	while(s):
 		s = s.strip('\n')
 		contents.append(s.split())
 		s = f.readline()
