@@ -33,8 +33,6 @@ Descending into the cuboid is performed by decreasing the relative depth of each
 
  python challenge.py fieldfile scriptfile
 
-- The line that converts the depth as a character into an integer is strange because in ASCII lowercase letters have higher values than capital letters. I could have just as easily calculated the value procedurally, but I thought it would be more fun to use 1 equation that worked over both ranges using modulus division.
-
 - Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with respect to the examples given. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
 
 - Overall, I found this problem very interesting to think about, particularly how to represent the problem while solving it. Thank you for the opportunity to share some code and thoughts with you all.
