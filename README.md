@@ -3,7 +3,7 @@ Code and information for a programming challenge from CognitiveScale
 
 ### Design decisions
 My first decision upon reading the problem was how to represent the field while running the simulation.
-Given the output requirement of printing the field relative to the ships location, the idea of maintaining an array of the relevant part of the field was unattractive, as this would result in consant resizing and moving of elements.
+Given the output requirement of printing the field relative to the ship's location, the idea of maintaining an array of the relevant part of the field was unattractive, as this would result in constant resizing and moving of elements.
 
 Instead, I noticed the similarity between the technically infinite field and a sparse array, an array with relatively very few non-zero elements.
 Sparse arrays are often represented by only keeping the locations and values of non-zero elements, for convenience and efficiency.
@@ -33,8 +33,8 @@ Descending into the cuboid is performed by decreasing the relative depth of each
 
  python challenge.py fieldfile scriptfile
 
-- The line that converts the depth as a character into an integer is strange because in ASCII lowercase letters have higher values than capital letters. Could have just as easily calculated the value procedurally, but I thought it would be more fun to use 1 equation that worked over both ranges.
+- The line that converts the depth as a character into an integer is strange because in ASCII lowercase letters have higher values than capital letters. I could have just as easily calculated the value procedurally, but I thought it would be more fun to use 1 equation that worked over both ranges using modulus division.
 
-- Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with resepect to the examples given. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
+- Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with respect to the examples given. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
 
 - Overall, I found this problem very interesting to think about, particularly how to represent the problem while solving it. Thank you for the opportunity to share some code and thoughts with you all.
