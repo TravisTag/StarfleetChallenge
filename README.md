@@ -29,10 +29,12 @@ Descending into the cuboid is performed by decreasing the relative depth of each
 ### Notes
 - I used Python 3 for this, but tested it with Python 2.7.5 as well, so it should work with either, provided NumPy is installed.
 
-- As defined, the program takes 2 command line arguments: the field file and script file names in order.
+- As defined, the program, challenge.py, takes 2 command line arguments: the field file and script file names in order, so simply run:
+
+ python challenge.py fieldfile scriptfile
 
 - The line that converts the depth as a character into an integer is strange because in ASCII lowercase letters have higher values than capital letters. Could have just as easily calculated the value procedurally, but I thought it would be more fun to use 1 equation that worked over both ranges.
 
-- Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with resepect to the examples. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
+- Not to nitpick, and I hope this doesn't come across as rude, but the definitions of north and south as incrementing and decrementing y, respectively, are backwards with resepect to the examples given. I think it's clear what you were looking for by the examples and example I/O, but I just thought you might want to know!
 
-
+- Overall, I found this problem very interesting to think about, particularly how to represent the problem while solving it. Thank you for the opportunity to share some code and thoughts with you all.
